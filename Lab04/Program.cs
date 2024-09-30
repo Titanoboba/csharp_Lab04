@@ -221,6 +221,52 @@ public class CarComparerName : IComparer<Car>
     }
 }
 
+public class CarCatalog
+{
+    Car[] cars;
+    CarCatalog(Car[] cars)
+    {
+        this.cars = cars;
+    }
+    public IEnumerator<Car> GetEnumerator()
+    {
+        foreach (Car car in cars)
+        {
+            yield return car;
+        }
+    }
+
+    public IEnumerator<Car> GetEnumeratorReverse()
+    {
+        for (int i = cars.Length - 1; i > 0; i--)
+        {
+            yield return cars[i];
+        }
+    }
+
+    public IEnumerator<Car> GetEnumeratorYearProduction(int year)
+    {
+        foreach (Car car in cars)
+        {
+            if (car.ProductionYear == year)
+            {
+                yield return car;
+            }
+        }
+    }
+
+    public IEnumerator<Car> GetEnumeratorMaxSpeed(int maxspeed)
+    {
+        foreach (Car car in cars)
+        {
+            if (car.MaxSpeed == maxspeed)
+            {
+                yield return car;
+            }
+        }
+    }
+}
+
 internal class Program
 {
     static void Main(string[] args)
