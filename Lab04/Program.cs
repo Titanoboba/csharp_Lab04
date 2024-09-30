@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Specialized;
 
 public class MyMatrix
 {
@@ -119,5 +121,150 @@ public class MyMatrix
     {
         get { return matrix[i][j]; }
 
+    }
+}
+
+public class Car
+{
+    public string Name {  get; set; }
+
+    public int ProductionYear {  get; set; }
+
+    public double MaxSpeed {  get; set; }
+
+    public Car (string? name, int productionYear, double maxspeed)
+    {
+        if (name == null)
+        {
+            this.Name = "Kelvin";
+        }
+        else
+        {
+            this.Name = name;
+        }
+        this.ProductionYear = productionYear;
+        this.MaxSpeed = maxspeed;
+    }
+
+    public override string ToString()
+    {
+        return String.Format($"Car name: {Name}\nProduction year: {ProductionYear}\nMax speed: {MaxSpeed}");
+    }
+}
+
+public class CarComparerProductionYear : IComparer<Car>
+{
+    public int Compare(Car x, Car y)
+    {
+        if (x.ProductionYear.CompareTo(y.ProductionYear) != 0)
+        {
+            return x.ProductionYear.CompareTo(y.ProductionYear);
+        }
+        else if (x.MaxSpeed.CompareTo(y.MaxSpeed) != 0)
+        {
+            return x.MaxSpeed.CompareTo(y.MaxSpeed);
+        }
+        else if (x.Name.CompareTo(y.Name) != 0)
+        {
+            return x.Name.CompareTo(y.Name);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
+public class CarComparerMaxSpeed : IComparer<Car>
+{
+    public int Compare(Car x, Car y)
+    {
+        if (x.MaxSpeed.CompareTo(y.MaxSpeed) != 0)
+        {
+            return x.MaxSpeed.CompareTo(y.MaxSpeed); 
+        }
+        else if (x.ProductionYear.CompareTo(y.ProductionYear) != 0)
+        {
+            return x.ProductionYear.CompareTo(y.ProductionYear);
+        }
+        else if (x.Name.CompareTo(y.Name) != 0)
+        {
+            return x.Name.CompareTo(y.Name);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
+public class CarComparerName : IComparer<Car>
+{
+    public int Compare(Car x, Car y)
+    {
+        if (x.Name.CompareTo(y.Name) != 0)
+        {
+            return x.Name.CompareTo(y.Name);
+        }
+        else if (x.MaxSpeed.CompareTo(y.MaxSpeed) != 0)
+        {
+            return x.MaxSpeed.CompareTo(y.MaxSpeed);
+        }
+        else if (x.ProductionYear.CompareTo(y.ProductionYear) != 0)
+        {
+            return x.ProductionYear.CompareTo(y.ProductionYear);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+}
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        List <Car> cars = new List <Car>();
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine($"Input information about car # {i+1}");
+            Console.Write("Name: ");
+            string? name = Console.ReadLine();
+            Console.Write("Production year: ");
+            int productionYear = Convert.ToInt32(Console.ReadLine());
+            Console.Write("MaxSpeed: ");
+            double maxSpeed = Convert.ToDouble(Console.ReadLine());
+            cars.Add(new Car(name, productionYear, maxSpeed));
+        }
+
+        CarComparerMaxSpeed carComparerMaxSpeed = new CarComparerMaxSpeed();
+        CarComparerName carComparerName = new CarComparerName();
+        CarComparerProductionYear carComparerProductionYear = new CarComparerProductionYear();
+
+        Console.WriteLine("Initial list");
+
+        foreach (Car car in cars) Console.WriteLine(car);
+
+        Console.WriteLine("Sorted by max speed");
+
+        List<Car> carsSpeedSort = cars;
+        carsSpeedSort.Sort(carComparerMaxSpeed);
+
+        foreach (Car car in carsSpeedSort) Console.WriteLine(car);
+
+        Console.WriteLine("Sorted by production year");
+
+        List<Car> carsYearSort = cars;
+        carsSpeedSort.Sort(carComparerProductionYear);
+
+        foreach (Car car in carsYearSort) Console.WriteLine(car);
+
+        Console.WriteLine("Sorted by name");
+
+        List<Car> carsNameSort = cars;
+        carsSpeedSort.Sort(carComparerName);
+
+        foreach (Car car in carsNameSort) Console.WriteLine(car);
     }
 }
